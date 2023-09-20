@@ -25,8 +25,8 @@ services:
 
   nestjs-app:
     container_name: nestjs-app
-    # depends_on:
-    #   - mysql-db
+    depends_on:
+      - mysql-db
     build: ./nestjs-app
     restart: unless-stopped
     env_file: ./.env
@@ -42,14 +42,14 @@ services:
     tty: true
     volumes:
       - ./nestjs-app:/app
-      - /app/node_modules
+      # - /app/node_modules
     networks:
       - default
     
   nextjs-app:
     container_name: nextjs-app
-    # depends_on: 
-      # - nestjs-app
+    depends_on: 
+      - nestjs-app
     build:
       context: ./nextjs-app
       dockerfile: Dockerfile
