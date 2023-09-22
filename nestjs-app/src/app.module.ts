@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
+import { DataSource } from 'typeorm';
+// import { UsersModule } from './users/users.module';
+import { BooksModule } from './components/books/books.module';
 
 @Module({
   imports: [
@@ -21,10 +23,21 @@ import { UsersModule } from './users/users.module';
           __dirname + '/**/*.entity.ts',
           __dirname + '/**/*.entity.js',
         ],
+        migrations: [
+          __dirname + '/src/migrations/**/*.ts',
+          __dirname + '/src/migrations/**/*.js',
+        ],
         synchronize: false,
       }),
+      // dataSource receives the configured DataSourceOptions
+      // and returns a Promise<DataSource>.
+      dataSourceFactory: async (options) => {
+        const dataSource = await new DataSource(options).initialize();
+        return dataSource;
+      },
     }),
-    UsersModule,
+    BooksModule,
+    // UsersModule,
   ],
 })
 export class AppModule {}
