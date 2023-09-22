@@ -1,0 +1,28 @@
+USE DOCKERIZED;
+CREATE TABLE `t_cart` (
+  `id` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
+  `customer_id` varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '0' COMMENT '会员id',
+  `sku_id` varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '0' COMMENT 'sku_id',
+  `num` int(11) NOT NULL DEFAULT '0' COMMENT '数量',
+  `create_by` varchar(32) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(32) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '修改人',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `sys_org_code` varchar(64) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '所属部门编码',
+  `tenant_id` varchar(64) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '租户id',
+  `goods_id` varchar(32) CHARACTER SET utf8mb4 NOT NULL COMMENT '商品主表id',
+  `delivery_type` int(1) DEFAULT NULL COMMENT '配送方式 0:自动发放 1到店自提 2快递物流',
+  `store_id` varchar(32) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '店铺id',
+  `sku_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT 'sku名称',
+  `goods_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '商品名称',
+  `sku_image` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT 'sku图片',
+  `buy_mode` int(1) DEFAULT NULL COMMENT '付款方式',
+  `min_buy` int(2) DEFAULT NULL COMMENT '最小购买',
+  `max_buy` int(2) DEFAULT NULL COMMENT '最大购买',
+  `once_max_buy` int(2) DEFAULT NULL COMMENT '一次最多购买',
+  `points` decimal(10,2) DEFAULT NULL COMMENT '商品积分',
+  `price` decimal(10,2) DEFAULT NULL COMMENT '商品价格',
+  `goods_delivery_type` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '商品配送方式',
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `IDX_ns_goods_cart_member_id` (`customer_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT=' 购物车';

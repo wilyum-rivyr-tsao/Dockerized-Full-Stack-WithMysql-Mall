@@ -19,7 +19,8 @@ services:
       - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
     volumes:
       - mysql-volume:/var/lib/mysql:rw
-      - ./mysql-db:/docker-entrypoint-initdb.d/
+      - ./mysql-db:/docker-entrypoint-initdb.d/      
+      - ./mysql-db/mycustom.cnf:/etc/mysql/conf.d/custom.cnf
     networks:
       - default
 

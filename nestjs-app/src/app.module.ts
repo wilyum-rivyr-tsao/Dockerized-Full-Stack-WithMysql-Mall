@@ -17,10 +17,10 @@ import { UsersModule } from './users/users.module';
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        // entities: [
-        //   __dirname + '/**/*.entity.ts',
-        //   __dirname + '/**/*.entity.js',
-        // ],
+        entities: [
+          __dirname + '/**/*.entity.ts',
+          __dirname + '/**/*.entity.js',
+        ],
         synchronize: false,
       }),
     }),
