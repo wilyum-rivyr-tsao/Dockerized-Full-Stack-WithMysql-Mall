@@ -2,8 +2,14 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
-// import { UsersModule } from './users/users.module';
+import { Books } from './components/books/entities/book.entity';
 import { BooksModule } from './components/books/books.module';
+import { AuthModule } from './components/auth/auth.module';
+import { UsersModule } from './components/users/users.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { BrandModule } from './components/brand/brand.module';
+import { SkuModule } from './components/sku/sku.module';
 
 @Module({
   imports: [
@@ -19,10 +25,8 @@ import { BooksModule } from './components/books/books.module';
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [
-          __dirname + '/**/*.entity.ts',
-          __dirname + '/**/*.entity.js',
-        ],
+        autoLoadEntities: true,
+        entities: [Books],
         migrations: [
           __dirname + '/src/migrations/**/*.ts',
           __dirname + '/src/migrations/**/*.js',
@@ -37,7 +41,16 @@ import { BooksModule } from './components/books/books.module';
       },
     }),
     BooksModule,
-    // UsersModule,
+    AuthModule,
+    UsersModule,
+    BrandModule,
+    SkuModule,
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AuthInterceptor,
+    },
   ],
 })
 export class AppModule {}
