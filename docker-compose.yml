@@ -38,7 +38,8 @@ services:
       - DB_USER=$MYSQLDB_USER
       - DB_PASSWORD=$MYSQLDB_PASSWORD
       - DB_DATABASE=$MYSQLDB_DATABASE
-      - DB_PORT=$MYSQLDB_DOCKER_PORT
+      - DB_PORT=$MYSQLDB_DOCKER_PORT      
+      - JWT_SECRET=$JWT_SECRET
     stdin_open: true
     tty: true
     volumes:

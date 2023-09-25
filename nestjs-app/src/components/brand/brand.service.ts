@@ -1,9 +1,17 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
+import { Brand } from './entities/brand.entity';
 
 @Injectable()
 export class BrandService {
+  constructor(
+    @InjectRepository(Brand)
+    private brandRepository: Repository<Brand>,
+  ) {}
+
   create(createBrandDto: CreateBrandDto) {
     return 'This action adds a new brand';
   }
@@ -13,7 +21,17 @@ export class BrandService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} brand`;
+    return this.brandRepository.findOne({
+      where: { id },
+      relations: ['spu', 'spu.sku'],
+      order: {
+        spu: {
+          sku: {
+            price: 'ASC',
+          },
+        },
+      },
+    });
   }
 
   update(id: number, updateBrandDto: UpdateBrandDto) {

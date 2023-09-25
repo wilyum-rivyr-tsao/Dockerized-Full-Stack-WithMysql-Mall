@@ -1,5 +1,5 @@
 USE DOCKERIZED;
-create table t_sku
+create table sku
 (
     id               int unsigned primary key auto_increment comment '主键',
     spu_id           int unsigned            not null comment '产品ID',

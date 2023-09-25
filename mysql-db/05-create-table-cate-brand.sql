@@ -1,5 +1,5 @@
 USE DOCKERIZED;
-create table t_category_brand
+create table category_brand
 (
     category_id int unsigned comment '分类 ID',
     brand_id    int unsigned comment '品牌 ID',

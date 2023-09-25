@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Spu } from 'src/components/spu/entities/spu.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Sku {
@@ -6,23 +7,41 @@ export class Sku {
   id: number;
 
   @Column()
+  spuId: string;
+
+  @Column()
   title: string;
 
   @Column()
-  description: string;
+  images: string;
 
   @Column()
-  thumbnail: string;
+  price: string;
 
   @Column()
-  author: string;
+  param: string;
 
   @Column()
-  userId: number;
+  saleable: string;
+
+  @Column()
+  valid: string;
 
   @Column({ default: null, type: 'datetime' })
-  created_at?: Date;
+  create_time?: Date;
 
   @Column({ default: null, type: 'datetime' })
-  updated_at?: Date;
+  last_update_time?: Date;
+
+  @Column()
+  org_price: string;
+
+  @Column()
+  decs: string;
+
+  @Column()
+  product_desc: string;
+
+  @ManyToOne(() => Spu, (spu) => spu.sku)
+  spu?: Spu;
 }

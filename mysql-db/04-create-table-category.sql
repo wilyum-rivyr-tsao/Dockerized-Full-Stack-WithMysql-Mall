@@ -1,5 +1,5 @@
 USE DOCKERIZED;
-create table t_category
+create table category
 (
     id        int unsigned primary key auto_increment comment '主键',
     `name`    varchar(200) not null comment '分类名称',

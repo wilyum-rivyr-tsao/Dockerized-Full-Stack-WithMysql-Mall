@@ -1,5 +1,5 @@
 USE DOCKERIZED;
-CREATE TABLE `t_cart` (
+CREATE TABLE `cart` (
   `id` varchar(32) CHARACTER SET utf8mb4 NOT NULL,
   `customer_id` varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '0' COMMENT '会员id',
   `sku_id` varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '0' COMMENT 'sku_id',

@@ -10,6 +10,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { BrandModule } from './components/brand/brand.module';
 import { SkuModule } from './components/sku/sku.module';
+import { SpuModule } from './components/spu/spu.module';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { SkuModule } from './components/sku/sku.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
         autoLoadEntities: true,
-        entities: [Books],
+        entities: [__dirname + 'entities/**/*.entity.ts'],
         migrations: [
           __dirname + '/src/migrations/**/*.ts',
           __dirname + '/src/migrations/**/*.js',
@@ -45,6 +46,7 @@ import { SkuModule } from './components/sku/sku.module';
     UsersModule,
     BrandModule,
     SkuModule,
+    SpuModule,
   ],
   providers: [
     {

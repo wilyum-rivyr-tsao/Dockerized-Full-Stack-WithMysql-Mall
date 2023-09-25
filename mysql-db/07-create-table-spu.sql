@@ -1,5 +1,5 @@
 USE DOCKERIZED;
-create table t_spu
+create table spu
 (
     id               int unsigned primary key auto_increment comment '主键',
     title            varchar(200) not null comment '标题',

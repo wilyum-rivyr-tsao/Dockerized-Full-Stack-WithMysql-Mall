@@ -1,4 +1,7 @@
 {
+  "dependencies": {
+    "@nestjs/mapped-types": "*"
+  },
   "name": "dockerized-full-stack-environment",
   "version": "1.0.0",
   "description": "Dockerized environment with a database, a back-end and a front-end application.",

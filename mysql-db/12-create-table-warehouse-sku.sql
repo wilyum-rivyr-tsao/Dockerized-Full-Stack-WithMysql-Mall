@@ -1,5 +1,5 @@
 USE DOCKERIZED;
-create table t_warehouse_sku
+create table warehouse_sku
 (
     warehouse_id int unsigned comment '主键',
     sku_id       int unsigned comment '商品ID',
