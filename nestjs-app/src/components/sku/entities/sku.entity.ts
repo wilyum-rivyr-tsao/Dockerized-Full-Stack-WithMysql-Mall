@@ -1,5 +1,20 @@
+import { Cart } from 'src/components/cart/entities/cart.entity';
+import { Property } from 'src/components/property/entities/property.entity';
 import { Spu } from 'src/components/spu/entities/spu.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Tag } from 'src/components/tags/entities/tag.entity';
+import { Warehouse } from 'src/components/warehouse/entities/warehouse.entity';
+
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToOne,
+  JoinColumn,
+  ManyToMany,
+  JoinTable,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
 export class Sku {
@@ -17,9 +32,6 @@ export class Sku {
 
   @Column()
   price: string;
-
-  @Column()
-  param: string;
 
   @Column()
   saleable: string;
@@ -42,6 +54,24 @@ export class Sku {
   @Column()
   product_desc: string;
 
+  @Column()
+  code: string;
+
   @ManyToOne(() => Spu, (spu) => spu.sku)
   spu?: Spu;
+
+  @OneToOne(() => Warehouse)
+  @JoinColumn()
+  warehouse?: Warehouse;
+
+  @ManyToMany(() => Tag)
+  @JoinTable()
+  tags: Tag[];
+
+  @ManyToMany(() => Property)
+  @JoinTable()
+  properties: Property[];
+
+  @OneToMany(() => Cart, (cart) => cart.sku)
+  cart: Cart[];
 }

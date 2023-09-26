@@ -11,6 +11,11 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { BrandModule } from './components/brand/brand.module';
 import { SkuModule } from './components/sku/sku.module';
 import { SpuModule } from './components/spu/spu.module';
+import { WarehouseSkuModule } from './components/warehouse/warehouse.module';
+import { Warehouse } from './components/warehouse/entities/warehouse.entity';
+import { TagsModule } from './components/tags/tags.module';
+import { PropertyModule } from './components/property/property.module';
+import { CartModule } from './components/cart/cart.module';
 
 @Module({
   imports: [
@@ -47,6 +52,10 @@ import { SpuModule } from './components/spu/spu.module';
     BrandModule,
     SkuModule,
     SpuModule,
+    WarehouseSkuModule,
+    TagsModule,
+    PropertyModule,
+    CartModule,
   ],
   providers: [
     {

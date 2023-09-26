@@ -17,6 +17,7 @@ async function bootstrap() {
     .setDescription('description')
     .setVersion('1.0')
     .addTag('example')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
@@ -25,6 +26,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       transform: true,
+      forbidUnknownValues: false,
     }),
   );
 

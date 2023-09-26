@@ -6,7 +6,9 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
+import { ApiQuery, ApiParam } from '@nestjs/swagger';
 import { SkuService } from './sku.service';
 import { CreateSkuDto } from './dto/create-sku.dto';
 import { UpdateSkuDto } from './dto/update-sku.dto';
@@ -25,10 +27,22 @@ export class SkuController {
     return this.skuService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.skuService.findOne(+id);
+  @Get([':id', ':code'])
+  @ApiQuery({ name: 'id', required: false, type: String })
+  @ApiQuery({ name: 'code', required: false, type: String })
+  findOne(@Query('id') id = 0, @Query('code') code) {
+    return this.skuService.findOne(id, code);
   }
+
+  @Get('tags/:ids')
+  findTagRelated(@Param('ids') ids: Array<number>) {
+    return this.skuService.findTagRelated(ids);
+  }
+
+  // @Get()
+  // index(): string {
+  //   return 'Admin page';
+  // }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSkuDto: UpdateSkuDto) {
