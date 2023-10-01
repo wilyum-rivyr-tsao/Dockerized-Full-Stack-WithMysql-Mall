@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsOrderValue, Repository } from 'typeorm';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
 import { Brand } from './entities/brand.entity';
@@ -20,14 +20,14 @@ export class BrandService {
     return `This action returns all brand`;
   }
 
-  findOne(id: number) {
+  findOne(id: number, order = 'ASC') {
     return this.brandRepository.findOne({
       where: { id },
       relations: ['spu', 'spu.sku'],
       order: {
         spu: {
           sku: {
-            price: 'ASC',
+            price: order as FindOptionsOrderValue,
           },
         },
       },

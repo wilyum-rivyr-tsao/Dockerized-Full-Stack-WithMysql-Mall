@@ -16,12 +16,10 @@ import { ApiBody } from '@nestjs/swagger';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  @ApiBody({
-    type: '',
-    description: 'Store product structure',
-  })
-  async login(@Body() req) {
+  @ApiBody({})
+  async login(@Request() req) {
     return this.authService.login(req);
   }
 

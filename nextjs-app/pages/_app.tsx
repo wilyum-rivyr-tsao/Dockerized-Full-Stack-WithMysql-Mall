@@ -1,6 +1,17 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
-
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+import {CartContextProvider,CartContext}  from '@/context/CartContext';
+import Header from '@/components/Header';
+export default function App({ Component, pageProps }: AppProps) {  
+  return (
+    <div>
+      <CartContextProvider>
+        <Header />
+        <Component {...pageProps} />
+      <div className='footer'>
+        fff
+      </div>
+      </CartContextProvider>
+    </div>
+  )
 }

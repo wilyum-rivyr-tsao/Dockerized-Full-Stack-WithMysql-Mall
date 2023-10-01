@@ -1,0 +1,37 @@
+.product-image{
+  width:100%;
+}
+.product-desc{
+  li{
+    margin:0;
+  }
+}
+.product-desc-tit{
+  margin:20px 0 0 0;
+}
+
+.properties{
+  width:50%;
+  margin-top:10px;
+  
+}
+
+.product-desc{
+  margin-bottom:10px;
+  .divider{
+    background:#322c87;
+  }
+  h3{
+    color:#322c87;
+  }
+}
+
+@media screen and (min-width:720px) {  
+  .pro-imgs{
+    margin-top:-470px;
+  }
+}
+
+.tag-products{
+  margin-top:40px;
+}

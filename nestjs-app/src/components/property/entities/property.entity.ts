@@ -11,4 +11,7 @@ export class Property {
 
   @Column()
   value: string;
+
+  @Column()
+  spuId: number;
 }

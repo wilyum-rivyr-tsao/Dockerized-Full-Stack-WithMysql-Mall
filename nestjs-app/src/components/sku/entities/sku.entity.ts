@@ -1,3 +1,4 @@
+import { Brand } from 'src/components/brand/entities/brand.entity';
 import { Cart } from 'src/components/cart/entities/cart.entity';
 import { Property } from 'src/components/property/entities/property.entity';
 import { Spu } from 'src/components/spu/entities/spu.entity';
@@ -28,7 +29,7 @@ export class Sku {
   title: string;
 
   @Column()
-  images: string;
+  image: string;
 
   @Column()
   price: string;
@@ -50,6 +51,9 @@ export class Sku {
 
   @Column()
   decs: string;
+
+  @Column()
+  images: string;
 
   @Column()
   product_desc: string;

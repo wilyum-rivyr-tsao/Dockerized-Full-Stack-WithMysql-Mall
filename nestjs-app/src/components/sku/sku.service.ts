@@ -31,11 +31,7 @@ export class SkuService {
           code,
         },
       ],
-      relations: {
-        warehouse: true,
-        tags: true,
-        properties: true,
-      },
+      relations: ['warehouse', 'tags', 'properties', 'spu', 'spu.brand'],
     });
   }
 

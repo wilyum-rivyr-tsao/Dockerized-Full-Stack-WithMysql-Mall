@@ -25,9 +25,10 @@ export class BrandController {
     return this.brandService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.brandService.findOne(+id);
+  @Get(':id/order/:order')
+  findOne(@Param('id') id: string, @Param('order') order: string) {
+    console.log('order', order);
+    return this.brandService.findOne(+id, order);
   }
 
   @Patch(':id')
