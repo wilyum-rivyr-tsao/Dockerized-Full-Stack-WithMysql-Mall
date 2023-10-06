@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  Request,
 } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
@@ -18,28 +19,30 @@ import { JwtAuthGuard } from './../auth/guard/jwt-auth.guard';
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createCartDto: CreateCartDto) {
+  create(@Request() req, @Body() createCartDto: CreateCartDto) {
     console.log('createCartDto', createCartDto);
-    return this.cartService.create(createCartDto);
+    return this.cartService.create(req.user.payload.user.id, createCartDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(@Req() request) {
+  findAll(@Request() request) {
     console.log('request', request.user);
     return this.cartService.findAll();
   }
 
-  @Get(':id')
+  @Get('id/:id')
   findOne(@Param('id') id: string) {
     return this.cartService.findOne(+id);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('getByUserId/:id')
-  findOneByUserId(@Param('id') id: string) {
-    return this.cartService.findOneByUserId(id);
+  @Get('getByUserId')
+  findOneByUserId(@Request() req) {
+    const userId = req.user.id;
+    return this.cartService.findByUserId(userId);
   }
 
   @Patch(':id')
@@ -47,6 +50,7 @@ export class CartController {
     return this.cartService.update(+id, updateCartDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.cartService.remove(+id);

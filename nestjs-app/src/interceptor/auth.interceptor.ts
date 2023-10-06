@@ -18,6 +18,7 @@ export class AuthInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest();
+
     const tokenArray = req.headers.authorization;
     if (tokenArray) {
       req.body['user'] = this.authService.decodeToken(
@@ -25,10 +26,6 @@ export class AuthInterceptor implements NestInterceptor {
       ).user;
     }
 
-    return next
-      .handle()
-      .pipe
-      // tap(() => console.log(``)),
-      ();
+    return next.handle().pipe();
   }
 }

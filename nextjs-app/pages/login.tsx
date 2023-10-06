@@ -32,6 +32,7 @@ export default function Login() {
         if (res.access_token) {
             // Save the token to a cookie
             setCookie('token', res.access_token);
+            setCookie('user',JSON.stringify(res.user))
            // Redirect to the dashboard or protected page
            router.push('/home');
            } else {

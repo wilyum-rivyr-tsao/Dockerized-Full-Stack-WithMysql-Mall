@@ -27,7 +27,7 @@ export default function Home() {
     storage:''
   })
   const [tagProduct, setTagProduct] = useState([] as any)
-  const {cart,setCart} = useContext(CartContext)
+  const {cart,setCart,getCart} = useContext(CartContext)
 
   useEffect(() => {
     const id = (router?.query?.id ?? 0) as number
@@ -36,13 +36,6 @@ export default function Home() {
       getProduct(id)      
     }
     
-    // setCart(
-    //   {
-    //     userId:1,
-    //     skuId:2,
-    //     num:10
-    //   }
-    // )
   }, [router])
 
   useEffect(() => {
@@ -68,7 +61,7 @@ export default function Home() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authentication': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         }
       })
       const properties = await res.json()
@@ -102,7 +95,7 @@ export default function Home() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authentication': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         }
       })      
       const product = (await res.json())[0]
@@ -129,7 +122,7 @@ export default function Home() {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authentication': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`
         }
       })      
       const tagProduct = (await res.json())
@@ -144,13 +137,11 @@ export default function Home() {
 
 
 
-  const handleIncrement = () => {
-    counter >= product?.wareh
+  const handleIncrement = () => {    
     setcounter(counter+1)
   };
 
-  const handleDecrement = () => {
-    if(counter < 0) return
+  const handleDecrement = () => {    
     setcounter(counter-1)
   };
   
@@ -158,6 +149,51 @@ export default function Home() {
     setProperty({...property,[type]:event.target.value as string})
     console.log('properties', property)
   };
+
+  const addCart = async () => {
+    try {
+      const token = getCookie("token")
+      if(!token){
+        console.log('no token')
+        return  
+      }
+      const user = JSON.parse(getCookie("user") ?? "")
+
+      const cartItem = cart.find(item => {        
+        return Number(item.skuId) === Number(id) && Number(item.userId) === Number(user.id)
+      })
+      console.log('cartItem', cartItem)
+      
+      if(cartItem?.id){
+        const res = await fetch(`http://localhost:3001/cart/${cartItem?.id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body:JSON.stringify({num:cartItem?.num + counter})
+        })      
+        const cartRes = (await res.json())
+
+      }else{
+        const res = await fetch(`http://localhost:3001/cart`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body:JSON.stringify({skuId:id,num:counter})
+        })      
+        const cartRes = (await res.json())
+      }
+
+      getCart()
+      // setCart(cart)
+    } catch (
+    error) {
+      
+    }
+  }
 
   return(
     <div>
@@ -256,7 +292,7 @@ export default function Home() {
                   <Button  variant="contained" disabled={counter >= product?.warehouse?.num } onClick={handleIncrement}>+</Button>                    
                 </ButtonGroup>
               </div>
-              <Button variant="contained" className="add-cart">
+              <Button variant="contained" className="add-cart" onClick={addCart} disabled={counter <= 0 || counter >= product?.warehouse?.num}>
                 <ShoppingCartIcon/>
                 加入购物车
               </Button>

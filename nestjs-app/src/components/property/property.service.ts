@@ -17,7 +17,6 @@ export class PropertyService {
   }
 
   findAll(spuId) {
-    console.log('spuId', spuId);
     return this.propertyRepository.find({
       where: {
         spuId,

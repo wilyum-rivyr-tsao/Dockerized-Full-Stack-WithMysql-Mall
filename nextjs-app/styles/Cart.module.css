@@ -1,0 +1,9 @@
+.cart{
+  margin-top:40px;
+}
+
+.org-price{
+  text-decoration:line-through;
+  color:#ddd;
+  mrign-right:10px;
+}

@@ -21,7 +21,6 @@ export class SkuService {
   }
 
   findOne(id = 0, code) {
-    console.log('code', code);
     return this.skuRepository.find({
       where: [
         {
@@ -36,7 +35,6 @@ export class SkuService {
   }
 
   findTagRelated(tags: Array<number>) {
-    console.log('tags', tags);
     return this.skuRepository.find({
       relations: ['tags'],
       where: {

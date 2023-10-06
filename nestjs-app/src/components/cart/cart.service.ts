@@ -12,9 +12,9 @@ export class CartService {
     private cartRepository: Repository<Cart>,
   ) {}
 
-  async create(createCartDto: CreateCartDto) {
+  async create(userId: string, createCartDto: CreateCartDto) {
     return await this.cartRepository
-      .save(createCartDto)
+      .save({ userId, ...createCartDto })
       .then((res) => res)
       .catch((e) => console.log(e));
   }
@@ -27,7 +27,8 @@ export class CartService {
     return `This action returns a #${id} cart`;
   }
 
-  findOneByUserId(id: string) {
+  findByUserId(id: string) {
+    console.log('id', id);
     return this.cartRepository.find({
       where: {
         userId: id,
@@ -38,11 +39,17 @@ export class CartService {
     });
   }
 
-  update(id: number, updateCartDto: UpdateCartDto) {
-    return `This action updates a #${id} cart`;
+  async update(id: number, updateCartDto: UpdateCartDto) {
+    return await this.cartRepository
+      .save({ id, ...updateCartDto })
+      .then((res) => res)
+      .catch((e) => console.log(e));
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cart`;
+  async remove(id: number) {
+    return await this.cartRepository
+      .delete({ id })
+      .then((res) => res)
+      .catch((e) => console.log(e));
   }
 }

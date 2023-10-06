@@ -22,7 +22,6 @@ export class PropertyController {
 
   @Get(':id')
   findAll(@Param('id') id: number) {
-    console.log('id', id);
     return this.propertyService.findAll(+id);
   }
 

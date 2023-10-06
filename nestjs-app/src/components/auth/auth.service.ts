@@ -32,12 +32,12 @@ export class AuthService {
       },
     };
     return {
+      user: payload.user,
       access_token: this.jwtService.sign(payload),
     };
   }
 
   async register(data) {
-    console.log('data', data);
     data.password = await bcrypt.hash(data.password, 10);
     const response = await this.usersService.create(data);
     if (response) {

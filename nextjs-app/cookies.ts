@@ -12,7 +12,9 @@ export const setCookie = (name:string, value:string) => {
 };
 
 export const getCookie = (name:string) => {
-    return Cookies.get(name);
+    const cookie = Cookies.get(name);
+    console.log('cookie', cookie)
+    return cookie
 };
 
 export const removeCookie = (name:string) => {

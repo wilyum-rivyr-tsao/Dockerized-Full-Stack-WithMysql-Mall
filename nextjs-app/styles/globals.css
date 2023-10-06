@@ -2,6 +2,7 @@
   text-decoration:line-through;
   color:#bbb;
 }
+
 .counter{
   display:flex;
   align-items:center;
@@ -16,6 +17,7 @@
   margin-top:10px;
   width:200px;
 }
+
 .tags{
   margin:10px 0;
   span{
