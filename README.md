@@ -1,26 +1,21 @@
-# Dockerized Full-Stack Environment
+# Dockerized Full-Stack Mall Demo
+There's db.sql in root folder.
+If there is any problem running the program, please contact WeChat: tracyfour
+Appreciate！
 
-## Introduction
-
-This tutorial will teach you how to setup a dockerized environment that with a single command can run:
-
-- a MySQL database server (and create and populate a database in it in the first run)
-- a back-end using the NestJS framework with a simple API
-- a front-end using the NextJS framework that calls the back-end API
-
+如果运行程序有问题请联系微信：tracyfour 感谢
 ## Folder structure
-
-You can see the most important files and it's locations in the diagram below. Some files were hidden to make it easier to understand.
 
 ```
 📦dockerized-full-stack-environment
  ┣ 📂mysql-db
  ┃ ┣ 📜00-create-db.sql
- ┃ ┣ 📜01-create-table-users.sql
- ┃ ┗ 📜02-populate-users-table.sql
+ ┃ ┣ 📜01-create-table.sql
+ ┃ ┗ 📜02-populate-db.sql
  ┣ 📂nestjs-app
  ┃ ┣ 📂node_modules
  ┃ ┣ 📂src
+ ┃ ┣ ┣📂components - 主要逻辑
  ┃ ┣ 📂test
  ┃ ┣ 📜.dockerignore
  ┃ ┣ 📜Dockerfile
@@ -40,13 +35,7 @@ You can see the most important files and it's locations in the diagram below. So
  ┗ 📜package.json
  ```
 
-## Install Docker Desktop
-
-- <https://docs.docker.com/desktop/install/windows-install/>
-- <https://docs.docker.com/desktop/install/linux-install/>
-- <https://docs.docker.com/desktop/install/mac-install/>
-
-## Run everything together
+## Run everything together 
 
 Run `docker-compose up`
 
@@ -71,12 +60,24 @@ Run `docker-compose up`
 
 Run `npm run clean` or `docker-compose down -v`
 
-## Please ⭐ if it helped you
+## 进入项目：Enter project
+http://localhost:3000/login
 
-## Useful links
+email:aoeu@oaeu.com
 
-- <https://nextjs.org/docs/getting-started>
-- <https://docs.nestjs.com/first-steps>
-- <https://docs.nestjs.com/recipes/hot-reload>
-- <https://docs.nestjs.com/recipes/sql-typeorm#sql-typeorm>
-- <https://docs.nestjs.com/techniques/database>
+password：1234
+
+## 项目技术点 Project technical points：
+### 后端 backend：
+框架 framework
+nestjs
+#### authication: jwt passport 
+typeorm:onetomany/manytomany/manytoone/queryBuilder/entity
+## 前端 frontend：
+nextjs
+
+mui
+
+tailwindcss
+
+nesting css
