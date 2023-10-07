@@ -27,11 +27,16 @@ export class SkuController {
     return this.skuService.findAll();
   }
 
-  @Get(':id/code/:code')
+  @Get(':id')
   @ApiParam({ name: 'id', required: false, type: String })
+  findOne(@Param('id') id = 0) {
+    return this.skuService.findOne(id);
+  }
+
+  @Get('code/:code')
   @ApiParam({ name: 'code', required: false, type: String })
-  findOne(@Param('id') id = 0, @Param('code') code) {
-    return this.skuService.findOne(id, code);
+  findOneByCode(@Param('code') code) {
+    return this.skuService.findByCode(code);
   }
 
   @Get('tags/:ids')

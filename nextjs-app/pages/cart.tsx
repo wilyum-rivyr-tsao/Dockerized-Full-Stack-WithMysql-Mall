@@ -118,7 +118,9 @@ export default function Login() {
     }
   }, [cart])
 
-  async function deleteFromCart(id:number){
+  async function deleteFromCart(e:Event,id:number){
+    e.preventDefault()
+    e.stopPropagation()
     try {
       deleteCart(id)
     } catch (error) {
@@ -180,8 +182,8 @@ export default function Login() {
                         </p>
                       </Grid>
                       <Grid item xs={2} className='flex flex-col items-end pr-6'>
-                        <CloseIcon onClick={() => {
-                          deleteFromCart(item?.id)
+                        <CloseIcon onClick={(e) => {
+                          deleteFromCart(e,item?.id)
                         }} className='mb-8 text-gray-500'></CloseIcon>
                         <ButtonGroup size="small" aria-label="small outlined button group">
                           {<Button variant="contained" disabled={item?.num <= 1 } onClick={()=>{

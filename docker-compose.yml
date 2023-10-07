@@ -63,7 +63,7 @@ services:
     tty: true
     volumes:
       - ./nextjs-app:/app
-      - /app/node_modules
+      # - /app/node_modules
       - /app/.next
     networks:
       - default

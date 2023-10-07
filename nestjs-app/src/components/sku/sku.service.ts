@@ -20,18 +20,36 @@ export class SkuService {
     return this.skuRepository.find();
   }
 
-  findOne(id = 0, code) {
+  findOne(id = 0) {
     return this.skuRepository.find({
       where: [
         {
           id,
         },
-        {
-          code,
-        },
       ],
       relations: ['warehouse', 'tags', 'properties', 'spu', 'spu.brand'],
     });
+  }
+
+  async findByCode(code) {
+    console.log('code', code);
+    code = code.split(',');
+    const queryBuilder = this.skuRepository.createQueryBuilder('sku');
+    const query = queryBuilder
+      .leftJoin('sku.properties', 'properties')
+      .andWhere('properties.id IN (:...code)', { code })
+      .groupBy('sku.id')
+      .having('COUNT(DISTINCT properties.id) = :codeCount', {
+        codeCount: code.length,
+      })
+      .getMany();
+    return query;
+    // return this.skuRepository.find({
+    //   where: {
+    //     properties: In(code),
+    //   },
+    //   relations: ['warehouse', 'tags', 'properties', 'spu', 'spu.brand'],
+    // });
   }
 
   findTagRelated(tags: Array<number>) {
