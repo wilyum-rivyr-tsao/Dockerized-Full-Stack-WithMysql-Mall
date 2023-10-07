@@ -21,7 +21,7 @@ export default function Home() {
   const [goods, setgoods] = useState([])
   const [brand, setBrand] = useState({} as any)
   const [order, setOrder] = useState('');
-  const [counter, setcounter] = useState(0)
+  const [counter, setcounter] = useState(1)
   const [property, setProperty] = useState({
     RAM:'',
     storage:''
@@ -83,15 +83,14 @@ export default function Home() {
     }    
    }
   
-  async function getProduct(id=0) {
-    
+  async function getProduct(id:number) {    
     try {
       const token = getCookie("token")
       if(!token){
         console.log('no token')
         return  
       }
-      const res = await fetch(`http://localhost:3001/sku/${id}/code/${code}`, {
+      const res = await fetch(`http://localhost:3001/sku/${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -99,11 +98,34 @@ export default function Home() {
         }
       })      
       const product = (await res.json())[0]
-      await getProperties(product?.spu?.id)
-      setProduct(product)    
 
+      await getProperties(product?.spu?.id)      
+      setProduct(product)
       await getProductByTagIds(product.tags.map((item:any)=>item.id))
         
+    } catch (error) {
+      console.log('error', error)
+    }    
+   }
+
+   async function getProductByCode(code?:string[]) {    
+    try {
+      const token = getCookie("token")
+      if(!token){
+        console.log('no token')
+        return  
+      }
+      const res = await fetch(`http://localhost:3001/sku/code/${code}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })      
+      const product = (await res.json())[0]
+      console.log('code product', product)
+      router.push(`product?id=${product.id}`)
+      
     } catch (error) {
       console.log('error', error)
     }    
@@ -125,8 +147,7 @@ export default function Home() {
           'Authorization': `Bearer ${token}`
         }
       })      
-      const tagProduct = (await res.json())
-      console.log('tagProduct', tagProduct)
+      const tagProduct = (await res.json())      
       setTagProduct(tagProduct)
     } catch (
     error) {
@@ -146,8 +167,22 @@ export default function Home() {
   };
   
   const handleChange = (event: SelectChangeEvent,type:string) => {
-    setProperty({...property,[type]:event.target.value as string})
-    console.log('properties', property)
+    const newProperty = {...property,[type]:event.target.value as string}
+    setProperty(newProperty)
+    // console.log('property', property)
+    // console.log('product.properties', product?.properties)
+    if(newProperty.RAM !== ""){
+      let code = product?.properties?.filter((item:any)=>{
+        if(item.name !== Object.keys(newProperty)[0] && item.name !== Object.keys(newProperty)[1]){
+          return item.id
+        }  
+      }).map((x:any)=>x.id)
+      // console.log('newProperty', newProperty)
+      code = [...code,...Object.values(newProperty)]
+      // console.log('code--', Object.values(newProperty))
+
+      getProductByCode(code)
+    }
   };
 
   const addCart = async () => {
@@ -197,13 +232,13 @@ export default function Home() {
 
   return(
     <div>
-      <Container>        
+      <Container className='mt-10'>        
         <Grid container spacing={2}>
           <Grid md={6} xs={12} item>
             <img src={product?.image} alt="product" className={`${styles['product-image']} ${styles['product-image-head']}`}/>
           </Grid>
           <Grid md={6} xs={12} item>
-            <Breadcrumbs aria-label="breadcrumb">
+            <Breadcrumbs aria-label="breadcrumb" className='text-[#322c87]'>
               <Link underline="hover" color="inherit" href="/">
                 首页
               </Link>
@@ -217,18 +252,18 @@ export default function Home() {
               <Typography color="text.primary">{product?.title}</Typography>
             </Breadcrumbs>
             <Stack>
-              <h3>{product?.title}</h3>
-              <span>
+              <h3  className='mb-0 text-2xl'>{product?.title}</h3>
+              <span className='text-gray-400'>
                 {product?.code?.replaceAll(',', '')}
               </span>
-              <div>
+              <div className='text-[#322c87] mt-10 font-bold'>
                 Brand 品牌 | 
                 <span>
                   {' ' + product?.spu?.brand?.name}
                 </span>
               </div>
-              <h4 className={styles['product-desc-tit']}>| 产品介绍 | </h4>
-              <ul className={styles['product-desc']}>
+              <h4 className={styles['product-desc-tit']+" text-gray-400"}>| 产品介绍 | </h4>
+              <ul className={styles['product-desc']+" text-gray-400"}>
                 {
                   product?.decs?.map((item:string,index:number) => {
                     return (
@@ -239,7 +274,7 @@ export default function Home() {
                   })
                 }
               </ul>
-              <div>
+              <div className='mt-5 mb-5 text-gray-400'>
                 <span>预计出货日 ｜ </span>
                 <span>
                   {product?.warehouse?.delivery_date}
@@ -247,10 +282,7 @@ export default function Home() {
                 <span>天</span>
               </div>
 
-              <div className='disabled-text'>
-                {product?.org_price}
-              </div>
-
+              <div className='mt-5'>
                 <div className={styles['properties']}>
                   <InputLabel id="demo-simple-select-label">RAM</InputLabel>
                   
@@ -283,16 +315,20 @@ export default function Home() {
                     }))}
                   </Select>
                 </div>
+              </div>
               
-              <div className='counter'>
-                <div className='counter-price'>{product?.price}</div>
+              <div className='mt-6 disabled-text'>
+                {product?.org_price}
+              </div>
+              <div className='counter'>                
+                <div className='text-3xl counter-price text-[#322c87] font-bold'>{product?.price}</div>
                 <ButtonGroup size="small" aria-label="small outlined button group">
-                  {<Button variant="contained" disabled={counter <= 0 } onClick={handleDecrement}>-</Button>}
-                  {<Button disabled={counter === 0 || counter >= product.warehouse.num}>{counter}</Button>}
+                  {<Button variant="contained" disabled={counter <= 1 } onClick={handleDecrement}>-</Button>}
+                  {<Button disabled={counter === 1 || counter >= product.warehouse?.num}>{counter}</Button>}
                   <Button  variant="contained" disabled={counter >= product?.warehouse?.num } onClick={handleIncrement}>+</Button>                    
                 </ButtonGroup>
               </div>
-              <Button variant="contained" className="add-cart" onClick={addCart} disabled={counter <= 0 || counter >= product?.warehouse?.num}>
+              <Button variant="contained" className="w-full add-cart" onClick={addCart} disabled={counter <= 0 || counter >= product?.warehouse?.num}>
                 <ShoppingCartIcon/>
                 加入购物车
               </Button>
@@ -313,7 +349,7 @@ export default function Home() {
                 商品简介
               </h3>
               <Divider className={styles['divider']} />      
-              <div dangerouslySetInnerHTML={{ __html: product.product_desc }} />      
+              <div dangerouslySetInnerHTML={{ __html: product?.product_desc }} />      
             </Stack>
           </Grid>
         </Grid>  

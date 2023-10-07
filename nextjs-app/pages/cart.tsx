@@ -10,23 +10,13 @@ import StepButton from '@mui/material/StepButton';
 import Typography from '@mui/material/Typography';
 import styles from "../styles/Cart.module.css"
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { CartContext } from '@/context/CartContext';
 import { getCookie } from '../cookies';
 import { CartItem } from '@/@types/Cart';
+import CloseIcon from '@mui/icons-material/Close';
 
 const steps = ['确认购买清单', '填写运送资料', '购物完成'];
-
-
-async function loginUser(credentials : any) {
-  return fetch('http://localhost:3001/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(credentials)
-  })
-    .then(data => data.json())
- }
 
 export default function Login() {
     const [product, setProduct] = useState({} as any)
@@ -139,6 +129,10 @@ export default function Login() {
   function goHome() {
     router.push('/home')
   }
+
+  function goProduct(id:number) {
+    router.push(`/product?id=${id}`)
+  }
   
 
   return(
@@ -153,79 +147,82 @@ export default function Login() {
                 </StepButton>
               </Step>
             ))}
-          </Stepper>
-          <Container maxWidth="xs"  >
-            {cart?.length > 0 ? (
-              <Box sx={{ width: '100%' }}>
-                {cart?.map(
-                  item=>{
-                    return (
-                      
-                        <Grid container spacing={2} key={item?.id}>
-                          <Grid item xs={2}>
-                            <img src={item?.sku?.image} alt="img" width={100}/>
-                          </Grid>
-                          <Grid item xs={8}>
-                            <h5>{item?.sku?.title}</h5>
-                            <p>
-                              <span className={styles['org-price']}>
-                                {item?.sku?.org_price}
-                              </span>
-                              <span>
-                                {item?.sku?.price}
-                              </span>
-                              <span>
-                                --
-                                {item?.sku?.price * item?.num}
-                              </span>
-                            </p>
-                          </Grid>
-                          <Grid item xs={2}>
-                            <span onClick={() => {
-                              deleteFromCart(item.id)
-                            }}>x</span>
-                            <ButtonGroup size="small" aria-label="small outlined button group">
-                              {<Button variant="contained" disabled={item?.num <= 1 } onClick={()=>{
-                                handleDecrement(item)
-                              }}>-</Button>}
-                              {<Button disabled={item?.num === 1 || item?.num >= product?.warehouse?.num}>{item?.num}</Button>}
-                              <Button  variant="contained" disabled={item?.num >= product?.warehouse?.num } onClick={()=>{
-                                handleIncrement(item)
-                              }}>+</Button>                    
-                            </ButtonGroup>
-                          </Grid>
-                        </Grid>
-                      
-                    )
-                  }
-                )}
-
-                <Stack>
-                  <div>
-                    <b>统计</b>
-                    <span>
-                      ¥{totalPrice}
-                    </span>
-                  </div>
-                  <Button variant="contained" className="add-cart" fullWidth>
-                    <ShoppingCartIcon/>
-                    去选购
-                  </Button>
-                </Stack>
-              </Box>
-            ):(
-              <Box sx={{ width: '100%' }}>
-                <p>购物车尚无商品，赶快去选购吧</p>
-                <Button variant="contained" className="add-cart" fullWidth onClick={goHome}>
-                  <ShoppingCartIcon/>
-                  去选购
-                </Button>
-              </Box>
-            )}
-            
-          </Container>
-        </Box>
+          </Stepper>            
+        </Box>        
       </Container>
+      <div className='mt-20'>
+        {cart?.length > 0 ? (
+          <Container>
+            {cart?.map(
+              item=>{
+                return (                
+                    <Grid container spacing={2} key={item?.id} className='mt-5 bg-white rounded-md h-36' onClick={()=>{goProduct(item?.sku?.id)}}>
+                      <Grid  xs={2} className='p-0'> 
+                        <img src={item?.sku?.image} alt="img" className='w-full h-36'/>
+                      </Grid>
+                      <Grid item xs={8}>
+                        <h5 className='m-2'>{item?.sku?.title}</h5>
+                        <p>
+                          <span className={styles['org-price']+' mr-4'}>
+                            {item?.sku?.org_price}
+                          </span>
+                          <span className='mr-2 text-gray-300'>
+                            {item?.sku?.price}
+                            
+                            <span className='mx-1'>
+                            x
+                            </span>
+                            {item?.num}
+                          </span>
+                          <span>
+                            ¥{item?.sku?.price * item?.num}
+                          </span>
+                        </p>
+                      </Grid>
+                      <Grid item xs={2} className='flex flex-col items-end pr-6'>
+                        <CloseIcon onClick={() => {
+                          deleteFromCart(item?.id)
+                        }} className='mb-8 text-gray-500'></CloseIcon>
+                        <ButtonGroup size="small" aria-label="small outlined button group">
+                          {<Button variant="contained" disabled={item?.num <= 1 } onClick={()=>{
+                            handleDecrement(item)
+                          }}>-</Button>}
+                          {<Button disabled={item?.num === 1 || item?.num >= product?.warehouse?.num}>{item?.num}</Button>}
+                          <Button  variant="contained" disabled={item?.num >= product?.warehouse?.num } onClick={()=>{
+                            handleIncrement(item)
+                          }}>+</Button>                    
+                        </ButtonGroup>
+                      </Grid>
+                    </Grid>
+                  
+                )
+              }
+            )}
+
+            <Stack className='float-right '>
+              <div className='flex w-[200px] px-2 py-4 mt-10 bg-white'>
+                <b>统计</b>
+                <span>
+                  ¥{totalPrice}
+                </span>
+              </div>
+              <Button variant="contained" className="add-cart" fullWidth>
+                <ShoppingCartIcon/>
+                去选购
+              </Button>
+            </Stack>
+          </Container>
+        ):(
+          <Container className="flex flex-col items-center pt-20 pb-4 bg-white">
+            <ShoppingCartOutlinedIcon/>
+            <p className=''>购物车尚无商品，赶快去选购吧</p>
+            <Button variant="contained" className="w-full mt-20"  onClick={goHome}>
+              <ShoppingCartIcon/>
+              去选购
+            </Button>
+          </Container>
+        )}
+      </div>
     </div>
   )
 }

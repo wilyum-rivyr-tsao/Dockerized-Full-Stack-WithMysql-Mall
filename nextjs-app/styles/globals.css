@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .disabled-text{
   text-decoration:line-through;
   color:#bbb;
@@ -6,7 +10,6 @@
 .counter{
   display:flex;
   align-items:center;
-  margin-top:20px;
 }
 
 .counter-price{
@@ -32,7 +35,7 @@
   background:#eacdd4;
 }
 .header{
-  height:40px;
+  height:60px;
   padding-top:20px;
 }
 

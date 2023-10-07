@@ -6,13 +6,13 @@ import { removeCookie } from '../cookies';
 import { useRouter } from 'next/router';
 
 export default function Header() {
-  const {cart} = useContext(CartContext)
+  const {cart,setCart} = useContext(CartContext)
   const [count, setCount] = useState(0)
   const router = useRouter();
 
   useEffect(() => {    
     let count = 0
-    cart.map(item=>{
+    cart && cart?.map(item=>{
       count+=item.num
     })
     setCount(count)
@@ -21,6 +21,7 @@ export default function Header() {
   function logout() {
     removeCookie('token')
     removeCookie('user')
+    setCart([])
     router.push('/login')
   }
   

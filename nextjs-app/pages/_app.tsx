@@ -8,9 +8,6 @@ export default function App({ Component, pageProps }: AppProps) {
       <CartContextProvider>
         <Header />
         <Component {...pageProps} />
-      <div className='footer'>
-        fff
-      </div>
       </CartContextProvider>
     </div>
   )

@@ -1,9 +1,10 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useContext, useState } from 'react';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import { Input,TextField,Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import { setCookie } from '../cookies';
+import {CartContext} from '../context/CartContext'
 
 
 async function loginUser(credentials : any) {
@@ -21,6 +22,7 @@ export default function Login() {
   const router = useRouter();
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const {getCart}  = useContext(CartContext)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();  
@@ -33,6 +35,7 @@ export default function Login() {
             // Save the token to a cookie
             setCookie('token', res.access_token);
             setCookie('user',JSON.stringify(res.user))
+            await getCart()
            // Redirect to the dashboard or protected page
            router.push('/home');
            } else {

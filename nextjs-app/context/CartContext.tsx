@@ -84,6 +84,7 @@ const CartContextProvider : React.FC<{children:ReactNode}> = ({children}) =>{
 
    useEffect(() => {
     getCart()
+    console.log('getcart')
    }, [])
    
 
