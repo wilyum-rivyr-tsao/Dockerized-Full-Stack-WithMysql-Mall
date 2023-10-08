@@ -3,6 +3,9 @@
 # Use node alpine as it's a small node image
 FROM node:alpine
 
+RUN npm install -g yarn
+
+RUN npm install -g next
 # Create the directory on the node image 
 # where our Next.js app will live
 RUN mkdir -p /app
