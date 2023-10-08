@@ -3,6 +3,8 @@ There's db.sql in root folder.
 If there is any problem running the program, please contact WeChat: tracyfour
 Appreciate！
 
+API：http://localhost:3001/api#
+
 如果运行程序有问题请联系微信：tracyfour 感谢
 ## Folder structure
 
