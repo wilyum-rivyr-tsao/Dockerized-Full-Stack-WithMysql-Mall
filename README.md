@@ -1,4 +1,4 @@
-# Dockerized Full-Stack Mall Demo
+# Dockerized Full-Stack Mall
 There's db.sql in root folder.
 If there is any problem running the program, please contact WeChat: tracyfour
 Appreciate！
